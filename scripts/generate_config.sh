@@ -9,6 +9,10 @@ CONFIG_FILE=${5}
 
 secret=$(pwgen -s 64 1)
 
+# output the secret in stdout
+echo "The automatically generated secret is: ${secret}"
+echo "Please paste it into the synapse server's configuration file."
+
 # create the self-signed certificate
 openssl req -newkey rsa:4096 -new -nodes -x509 -days 3650 -keyout $DATA_DIR/$KEY_NAME -out $DATA_DIR/$CERT_NAME -subj "/C=FR/ST=BarbedLand/O=BarbedGroup/CN=$SERVER_NAME"
 
