@@ -1,8 +1,8 @@
 FROM alpine:3.7
 
 # coturn dependencies
-ENV REAL_DEPS="sqlite libevent openssl"
-ENV BUILD_DEPS="git shadow pwgen g++ make sqlite-dev libevent-dev openssl-dev linux-headers"
+ENV REAL_DEPS="sqlite libevent libressl"
+ENV BUILD_DEPS="git shadow pwgen g++ make sqlite-dev libevent-dev libressl-dev linux-headers"
 RUN apk update && apk add $REAL_DEPS $BUILD_DEPS
 
 # get the latest (as yet) release
@@ -36,5 +36,9 @@ RUN /build/generate_config.sh $SERVER_NAME $DATA_DIR $KEY_NAME $CERT_NAME $CONFI
 USER $COTURN_USER:$COTURN_GROUP
 
 ENTRYPOINT turnserver -c $DATA_DIR/$CONFIG_FILE
-EXPOSE 3478
+EXPOSE 3478/tcp
+EXPOSE 3478/udp
+EXPOSE 5349/tcp
+EXPOSE 5349/udp
+EXPOSE 60000-60500/udp
 VOLUME ["$DATA_DIR"]
